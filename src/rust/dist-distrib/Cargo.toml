@@ -1,0 +1,6 @@
+[package]
+name = "dist-distrib"
+version = "0.1.0"
+authors = ["mgadzhi <musaevgadzhi@gmail.com>"]
+
+[dependencies]
