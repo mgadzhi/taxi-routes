@@ -1,0 +1,7 @@
+.idea/*
+data/*
+hadoop-2.7.2/*
+out/*
+src/rust/dist-distrib/target/*
+*.lock
+*.pyc
