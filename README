@@ -1,0 +1,32 @@
+1. How to run distance.py (Python3):
+    cat 2010_03.trips | python distance.py > result
+
+    It should run just as well with python2, but there can be discrepancy in timing, due to the difference in items()/iteritems()
+
+2. How to run Rust program:
+    Tested on Rust 1.8 stable.
+    Install rust and cargo following instructions on
+    https://doc.rust-lang.org/book/getting-started.html#installing-on-linux-or-mac
+
+    cd src/rust/dist-distrib
+    cargo build --release
+    cat /path/to/2010_03.trips | ./target/release/dist-distrib > result
+
+4. How to build jar to run on Hadoop cluster:
+
+    Requirements: JDK 7+, Hadoop 2.6 (also tested with hadoop 2.7)
+
+    cd src/java
+    javac *.java
+    jar cf Routes.jar *.class
+
+3. How to run DistanceDistribution on hadoop:
+    hadoop jar Routes.jar DistanceDistribution /data/2010_03.trips distance-distribution
+
+4. How to run Routes on hadoop:
+    hadoop jar Routes.jar Routes /data/all.segments all.routes
+
+5. How to run Revenue on hadoop:
+    hadoop jar Routes.jar Revenue all.routes all.revenue
+
+Important! Revenue expects the output of Routes as an input!
