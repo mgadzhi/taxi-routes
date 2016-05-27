@@ -15,18 +15,20 @@ public class DistanceDistribution {
     public static class DistanceMapper extends Mapper<Object, Text, IntWritable, IntWritable> {
 
         private final static IntWritable one = new IntWritable(1);
+        private final static IntWritable dist = new IntWritable();
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             String[] parts = value.toString().split(" ");
-            double phi1 = Math.toRadians(Double.parseDouble(parts[2]));
-            double phi2 = Math.toRadians(Double.parseDouble(parts[5]));
+            double phi1 = Double.parseDouble(parts[2]);
+            double phi2 = Double.parseDouble(parts[5]);
 
-            double lambda1 = Math.toRadians(Double.parseDouble(parts[3]));
-            double lambda2 = Math.toRadians(Double.parseDouble(parts[6]));
+            double lambda1 = Double.parseDouble(parts[3]);
+            double lambda2 = Double.parseDouble(parts[6]);
 
-            double distance = Distance.distance(phi1, phi2, lambda1, lambda2);
-            int round_distance = (int)Math.ceil(distance);
-            context.write(new IntWritable(round_distance), one);
+            double distance = Distance.distance(phi1, lambda1, phi2, lambda2);
+            dist.set((int)Math.ceil(distance));
+            System.out.println((int)Math.ceil(distance));
+            context.write(dist, one);
         }
 
     }

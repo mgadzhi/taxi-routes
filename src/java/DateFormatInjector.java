@@ -5,6 +5,6 @@ import java.text.SimpleDateFormat;
  */
 public class DateFormatInjector {
     public static SimpleDateFormat getDateFormat() {
-        return new SimpleDateFormat("yyyy-MM-dd h:m:s");
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 }

@@ -30,9 +30,17 @@ public class KeyComparator extends WritableComparator {
 
         String[] t1Parts = t1.toString().split(keySeparator);
         String[] t2Parts = t2.toString().split(keySeparator);
+
+        Integer taxi1ID = Integer.valueOf(t1Parts[0]);
+        Integer taxi2ID = Integer.valueOf(t2Parts[0]);
+        if (!taxi1ID.equals(taxi2ID)) {
+            return taxi1ID.compareTo(taxi2ID);
+        }
+
         String taxi1Time = Utils.stripQuotes(t1Parts[1]);
         String taxi2Time = Utils.stripQuotes(t2Parts[1]);
         try {
+//            return dateFormat.parse(taxi1Time).compareTo(dateFormat.parse(taxi2Time));
             if (dateFormat.parse(taxi1Time).before(dateFormat.parse(taxi2Time))) {
                 return -1;
             }

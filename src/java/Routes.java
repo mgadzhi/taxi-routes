@@ -12,10 +12,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Routes {
 
-    private final static long MAX_DURATION = 600;
+    private final static long MAX_DURATION = 300;
     private final static double MAX_SPEED = 200.0;
 
     private static class SegmentsMapper extends Mapper<Object, Text, Text, Text> {
@@ -31,6 +32,7 @@ public class Routes {
             String outKey = parts[0] + "|" + parts[1];
             try {
                 Segment segment = Segment.fromString(value.toString());
+//                System.out.println(segment.toString() + "," + isValid(segment) + "," + segment.duration + "," + segment.speed);
                 if (isValid(segment)) {
                     context.write(new Text(outKey), value);
                 }
@@ -48,6 +50,9 @@ public class Routes {
         public void reduce(Text key, Iterable<Text> values,
                            Context context
         ) throws IOException, InterruptedException {
+            Random random = new Random();
+            int rid = random.nextInt(1000000);
+            System.out.println(String.format("%d\t%s", rid, key.toString()));
 
 //            IntWritable outKey = new IntWritable(Integer.parseInt(key.toString().split("\\|")[0]));
 
@@ -58,6 +63,7 @@ public class Routes {
                 Segment seg;
                 try {
                     seg = Segment.fromString(v.toString());
+                    System.out.println(String.format("%d\t%s", rid, v.toString()));
                 }
                 catch (ParseException e) {
                     System.err.println(String.format("Invalid segment line: %s", v.toString()));
@@ -110,6 +116,7 @@ public class Routes {
         job.setMapperClass(SegmentsMapper.class);
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(Text.class);
+
         job.setPartitionerClass(TaxiIdPartitioner.class);
         job.setGroupingComparatorClass(GroupComparator.class);
         job.setSortComparatorClass(KeyComparator.class);
